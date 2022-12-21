@@ -7,7 +7,6 @@ import { genreClient } from "../../utils/axiosInstancesServerside";
 import { makeSerializable } from "../../utils/util";
 import { Genre } from "../../api/@types";
 import { Args, Context } from "../../types/context";
-import { response } from "express";
 import Link from "next/link";
 import Layout from "../../components/Layout";
 import { Button, ButtonGroup, Heading, Tag } from "@chakra-ui/react";
