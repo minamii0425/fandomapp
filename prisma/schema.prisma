@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// PostgreSQLを使用
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Genresテーブル：ジャンル
+model Genres {
+  id                        Int             @id @default(autoincrement())  // ID
+  genre_name                String          @unique @db.VarChar(32)        // ジャンル名
+  genre_style               String?          @db.VarChar(8)
+  genre_start_date          DateTime?
+  genre_end_date            DateTime?
+  genre_start_age           Int?             @db.Integer
+  genre_end_age             Int?             @db.Integer
+  genre_followee            Int?             @db.Integer
+  genre_follower            Int?             @db.Integer
+  genre_ff_ratio            Int?             @db.Integer
+  genre_comment             String?          @db.VarChar(4096)
+  couplings                 Couplings?
+  fanfics                   Fanfics?
+  fanbooks                  Fanbooks?
+}
+
+
+// Couplingsテーブル：カプ
+model Couplings {
+  id                        Int             @id @default(autoincrement())  // ID
+  genre_name                Genres          @relation(fields: [genre_id], references: [id])
+  genre_id                  Int             @unique
+  coupling_name             String          @unique @db.VarChar(8)
+  coupling_fanact           String          @db.VarChar(8) 
+  coupling_style            String          @db.VarChar(32)
+  coupling_summary          String          @db.VarChar(4096)
+  coupling_top_name         String          @db.VarChar(32)
+  coupling_bottom_name      String          @db.VarChar(32)
+  coupling_top_age          Int
+  coupling_bottom_age       Int
+  coupling_top_summary      String          @db.VarChar(4096)
+  coupling_bottom_summary   String          @db.VarChar(4096)
+  coupling_top_height       Int
+  coupling_bottom_height    Int
+  coupling_top_job          String          @db.VarChar(32)
+  coupling_bottom_job       String          @db.VarChar(32)
+  fanfics                   Fanfics?
+  fanbooks                  Fanbooks?
+}
+
+// Fanficsテーブル：オン作品
+model Fanfics {
+  id                          Int           @id @default(autoincrement())  // ID
+  genre_name                  Genres        @relation(fields: [genre_id], references: [id])
+  genre_id                    Int           @unique
+  coupling_name               Couplings     @relation(fields: [coupling_id], references: [id])
+  coupling_id                 Int           @unique 
+  fanfic_title                String        @unique @db.VarChar(32)
+  fanfic_number_of_characters Int
+  fanfic_published_date       DateTime
+  fanfic_style                String        @db.VarChar(8)    
+  fanfic_bookmarks            Int
+  fanfic_summary              String        @db.VarChar(4096)
+  fanfic_rating               Boolean       @default(true)
+  fanfic_cover                String        @db.VarChar(512)
+  fanfic_comment              String        @db.VarChar(4096) 
+}
+
+
+// Fanbooksテーブル：オフ本
+model Fanbooks {
+  id                              Int           @id @default(autoincrement())  // ID
+  genre_name                      Genres        @relation(fields: [genre_id], references: [id])
+  genre_id                        Int           @unique
+  coupling_name                   Couplings     @relation(fields: [coupling_id], references: [id])
+  coupling_id                     Int           @unique
+  fanbook_title                   String        @unique
+  fanbook_pages    Int
+  fanbook_published_date          DateTime
+  fanbook_style                   String        @db.VarChar(8)    
+  fanbook_sample_bookmarks        Int
+  fanbook_newly_written           Boolean
+  fanbook_number_of_distribution_online  Int
+  fanbook_number_of_distribution_offline  Int
+  fanbook_number_of_published     Int
+  fanbook_price                   Int
+  fanbook_summary                 String        @db.VarChar(4096) 
+  fanbook_rating                  Boolean       @default(true)
+  fanbook_cover                   String        @db.VarChar(512) 
+  fanbook_comment                 String        @db.VarChar(4096) 
+}

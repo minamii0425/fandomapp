@@ -1,0 +1,17 @@
+openapi: "3.0.3"
+info:
+  title: "Sample API"
+  version: "1.0.0"
+paths:
+  "/massage":
+    get:
+      summary: "Sample API get operation"
+      description: "Sample API get operation"
+      responses:
+        "200":
+          description: "success operation"
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Hello world!"

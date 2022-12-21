@@ -1,0 +1,1469 @@
+openapi: 3.0.3
+info:
+  title: Fandom App
+  description: Fandom App API仕様書
+  version: 1.0.0
+  contact:
+    name: "Yuicop"
+    url: "http://twitter.com/yuiyuipun"
+    email: "yuico.yuicop@gmail.com"
+servers:
+  - url: "http://localhost:3010/api/"
+    description: 開発環境
+    # variables:
+    #   port:
+    #     description: "ポート番号"
+    #     default: "3010"
+tags:
+  - name: ジャンル
+    description: ジャンル関連
+  - name: カップリング
+    description: カップリング関連
+  - name: オン作品
+    description: オン作品関連
+  - name: オフ本
+    description: オフ本関連
+paths:
+  # ジャンル
+  /genres:
+    # ジャンルの一覧取得
+    get:
+      tags:
+        - ジャンル
+      summary: "ジャンルの取得"
+      description: "登録されているすべてのジャンルを取得する。"
+      operationId: getGenre
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Genres"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+    # ジャンルの追加
+    post:
+      tags:
+        - ジャンル
+      summary: "ジャンルの登録"
+      description: "ジャンルの登録を行う。"
+      operationId: postGenre
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Genre"
+        required: true
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponseBody"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+    # 複数ジャンルの削除
+    delete:
+      tags:
+        - ジャンル
+      summary: "ジャンルの削除"
+      description: "複数ジャンルの削除を行う。"
+      operationId: deleteGenres
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenreIDs"
+        required: true
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponseBody"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+  /genres/{id}:
+    # ジャンルの詳細取得
+    get:
+      tags:
+        - ジャンル
+      summary: "ジャンルの取得"
+      description: "指定したIDを持つジャンルの詳細を取得する。"
+      operationId: getGenreWithId
+      parameters:
+        - in: path
+          name: genreID
+          schema:
+            $ref: "#/components/schemas/GenreID"
+          required: true
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Genres"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "403":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+    # ジャンルの削除
+    delete:
+      tags:
+        - ジャンル
+      summary: "ジャンルの削除"
+      description: "指定したIDを持つジャンルを削除する。"
+      operationId: deleteGenre
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+        - in: query
+          name: genreID
+          schema:
+            $ref: "#/components/schemas/GenreID"
+          required: true
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponseBody"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "403":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+    # ジャンルの更新
+    put:
+      tags:
+        - ジャンル
+      summary: "ジャンルの更新"
+      description: "指定したIDを持つジャンルを更新する。"
+      operationId: putGenre
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+        - in: query
+          name: genreID
+          schema:
+            $ref: "#/components/schemas/GenreID"
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Genre"
+        required: true
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponseBody"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "403":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+  # カップリング
+  /couplings:
+    # カップリングの一覧取得
+    get:
+      tags:
+        - カップリング
+      summary: カップリングの取得
+      description: "登録されているすべてのカップリングを取得する。"
+      operationId: getCouplings
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Couplings"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+    # カップリングの追加
+    post:
+      tags:
+        - カップリング
+      summary: "カップリングの登録"
+      description: "カップリングの登録を行う。"
+      operationId: postCoupling
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Coupling"
+        required: true
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponseBody"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+  /couplings/{id}:
+    # カップリングの詳細取得
+    get:
+      tags:
+        - カップリング
+      summary: "カップリングの取得"
+      description: "指定したIDを持つカップリングの詳細を取得する。"
+      operationId: getCouplingWithId
+      parameters:
+        - in: path
+          name: CouplingID
+          description: カップリングのID
+          schema:
+            $ref: "#/components/schemas/CouplingID"
+          required: true
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Coupling"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "403":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+    # カップリングの削除
+    delete:
+      tags:
+        - カップリング
+      summary: "カップリングの削除"
+      description: "指定したIDを持つカップリングを削除する。"
+      operationId: deleteCoupling
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+        - in: query
+          name: couplingID
+          schema:
+            $ref: "#/components/schemas/CouplingID"
+          required: true
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponseBody"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "403":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+    # カップリングの更新
+    put:
+      tags:
+        - カップリング
+      summary: "カップリングの更新"
+      description: "指定したIDを持つカップリングを更新する。"
+      operationId: putCoupling
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+        - in: query
+          name: couplingID
+          schema:
+            $ref: "#/components/schemas/CouplingID"
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Coupling"
+        required: true
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponseBody"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "403":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+  # オン作品
+  /fanfics:
+    # オン作品の一覧取得
+    get:
+      tags:
+        - オン作品
+      summary: オン作品の取得
+      description: "登録されているすべてのオン作品を取得する。"
+      operationId: getFanfics
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Fanfics"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+    # オン作品の追加
+    post:
+      tags:
+        - オン作品
+      summary: "オン作品の登録"
+      description: "オン作品の登録を行う。"
+      operationId: postFanfic
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Fanfic"
+        required: true
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponseBody"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+  /fanfics/{id}:
+    # オン作品の詳細取得
+    get:
+      tags:
+        - オン作品
+      summary: "オン作品の取得"
+      description: "指定したIDを持つオン作品の詳細を取得する。"
+      operationId: getFanficWithId
+      parameters:
+        - in: path
+          name: CouplingID
+          description: オン作品のID
+          schema:
+            $ref: "#/components/schemas/FanficID"
+          required: true
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Fanfic"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "403":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+    # オン作品の削除
+    delete:
+      tags:
+        - オン作品
+      summary: "オン作品の削除"
+      description: "指定したIDを持つオン作品を削除する。"
+      operationId: deleteFanfic
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+        - in: query
+          name: オン作品のID
+          schema:
+            $ref: "#/components/schemas/FanficID"
+          required: true
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponseBody"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "403":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+    # オン作品の更新
+    put:
+      tags:
+        - オン作品
+      summary: "オン作品の更新"
+      description: "指定したIDを持つオン作品を更新する。"
+      operationId: putFanfic
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+        - in: query
+          name: オン作品のID
+          schema:
+            $ref: "#/components/schemas/FanficID"
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Fanfic"
+        required: true
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponseBody"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "403":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+  # オフ本
+  /fanbooks:
+    # オフ本の一覧取得
+    get:
+      tags:
+        - オフ本
+      summary: オフ本の取得
+      description: "登録されているすべてのオフ本を取得する。"
+      operationId: getFanbooks
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Fanbooks"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+    # オフ本の追加
+    post:
+      tags:
+        - オフ本
+      summary: "オフ本の登録"
+      description: "オフ本の登録を行う。"
+      operationId: postFanbook
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Fanbook"
+        required: true
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponseBody"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+  /fanbooks/{id}:
+    # オフ本の詳細取得
+    get:
+      tags:
+        - オフ本
+      summary: "オフ本の取得"
+      description: "指定したIDを持つオフ本の詳細を取得する。"
+      operationId: getFanbookWithId
+      parameters:
+        - in: path
+          name: CouplingID
+          description: オフ本のID
+          schema:
+            $ref: "#/components/schemas/FanbookID"
+          required: true
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Fanbook"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "403":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+    # オフ本の削除
+    delete:
+      tags:
+        - オフ本
+      summary: "オフ本の削除"
+      description: "指定したIDを持つオフ本を削除する。"
+      operationId: deleteFanbook
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+        - in: query
+          name: オフ本のID
+          schema:
+            $ref: "#/components/schemas/FanbookID"
+          required: true
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponseBody"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "403":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+    # オフ本の更新
+    put:
+      tags:
+        - オフ本
+      summary: "オフ本の更新"
+      description: "指定したIDを持つオフ本を更新する。"
+      operationId: putFanbook
+      parameters:
+        - name: X-Api-Key
+          in: header
+          description: リクエストユーザーのAPIキー
+          schema:
+            $ref: "#/components/schemas/XApiKey"
+        - name: Token
+          in: cookie
+          description: One Time Token
+          schema:
+            $ref: "#/components/schemas/Token"
+        - in: query
+          name: オフ本のID
+          schema:
+            $ref: "#/components/schemas/FanbookID"
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Fanbook"
+        required: true
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponseBody"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "403":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrResponse"
+components:
+  schemas:
+    # 共通
+    XApiKey:
+      type: string
+      description: APIキー
+      example: XXXX-XXXX-XXXX-XXXX
+    Token:
+      type: string
+      description: One time Token
+      example: "XXXX-XXXX-XXXX"
+    # ジャンル
+    GenreID:
+      type: integer
+      description: ジャンルID
+      example: 1
+    GenreIDs:
+      type: array
+      description: ジャンルID(複数)
+      items:
+        $ref: "#/components/schemas/GenreID"
+    GenreName:
+      type: string
+      description: ジャンル名
+      maxLength: 32
+      example: ダイヤのA
+    GenreStyle:
+      type: string
+      description: ジャンル傾向
+      enum:
+        - select genre style
+        - 漫画
+        - 小説
+        - アニメ
+        - 半生
+        - 生
+      example: 漫画
+    GenreStartDate:
+      type: string
+      description: ジャンルにハマった年月日
+      format: date
+      example: YYYY-MM-DD
+    GenreEndDate:
+      type: string
+      description: ジャンルから上がった年月日
+      format: date
+      example: YYYY-MM-DD
+    GenreStartAge:
+      type: integer
+      description: ジャンルにハマった時の年齢
+      example: 20
+    GenreEndAge:
+      type: integer
+      description: ジャンルから上がった時の年齢
+      example: 20
+    GenreFollowee:
+      type: integer
+      description: Twitterのフォロー数
+      example: 10
+    GenreFollower:
+      type: integer
+      description: Twitterのフォロワー数
+      example: 500
+    GenreFFRatio:
+      type: number
+      description: TwitterのFF比
+      format: float
+      example: 50.0
+    GenreComment:
+      type: string
+      description: ジャンル全般コメント
+      maxLength: 4096
+    # カップリング
+    CouplingID:
+      type: integer
+      example: 1
+    CouplingName:
+      type: string
+      maxLength: 8
+      example: 御沢
+    CouplingFanAct:
+      type: string
+      description: 二次創作をしたか
+      enum:
+        - "オフ本を発行"
+        - "オン専"
+        - "ROM"
+    CouplingStyle:
+      type: string
+      description: カップリングの傾向
+      maxLength: 32
+      example: 先輩×後輩
+    CouplingSummary:
+      type: string
+      description: カップリングの説明
+      maxLength: 4096
+    CouplingTopName:
+      type: string
+      description: 攻めの名前
+      maxLength: 32
+      example: 御幸一也
+    CouplingTopAge:
+      type: integer
+      description: 攻めの年齢
+      example: 17
+    CouplingTopSummary:
+      type: string
+      description: 攻めの説明
+      maxLength: 4096
+    CouplingTopJob:
+      type: string
+      description: 攻めの職業
+      maxLength: 32
+      example: 高校生・野球部主将
+    CouplingTopHeight:
+      type: integer
+      description: 攻めの身長
+      example: 178
+    CouplingBottomName:
+      type: string
+      description: 受けの名前
+      maxLength: 32
+      example: 沢村栄純
+    CouplingBottomAge:
+      type: integer
+      description: 受けの年齢
+      example: 16
+    CouplingBottomSummary:
+      type: string
+      description: 受けの説明
+      maxLength: 4096
+    CouplingBottomJob:
+      type: string
+      description: 受けの職業
+      maxLength: 32
+      example: 高校生・野球部
+    CouplingBottomHeight:
+      type: integer
+      description: 受けの身長
+      example: 175
+    # オン作品
+    FanficID:
+      type: integer
+      description: オン作品のID
+      example: 1
+    FanficTitle:
+      type: string
+      description: オン作品のタイトル
+      maxLength: 32
+      example: 新宝島
+    FanficNumberOfCharacters:
+      type: integer
+      description: オン作品の字数
+      example: 24000
+    FanficPublishedDate:
+      type: string
+      format: date
+      description: オン作品の公開日
+      example: YYYY-MM-DD
+    FanficStyle:
+      type: string
+      description: オン作品の作品傾向
+      maxLength: 8
+      example: シリアス
+    FanficBookmarks:
+      type: integer
+      description: オン作品のブクマ数
+      example: 1500
+    FanficSummary:
+      type: string
+      description: オン作品のあらすじ
+      maxLength: 4096
+    FanficRating:
+      type: boolean
+      description: オン作品の年齢制限の有無
+    FanficCover:
+      type: string
+      description: オン作品の表紙のURL
+      maxLength: 512
+    FanficComment:
+      type: string
+      description: オン作品のコメント
+      maxLength: 4096
+    # オフ本
+    FanbookID:
+      type: integer
+      description: オフ本のID
+      example: 1
+    FanbookTitle:
+      type: string
+      description: オフ本のタイトル
+      maxLength: 32
+      example: 新宝島
+    FanbookPages:
+      type: integer
+      description: オフ本のページ数
+      example: 124
+    FanbookPublishedDate:
+      type: string
+      format: date
+      description: オフ本の発行日
+      example: YYYY-MM-DD
+    FanbookStyle:
+      type: string
+      description: オフ本の作品傾向
+      maxLength: 8
+      example: シリアス
+    FanbookSampleBookmarks:
+      type: integer
+      description: オフ本のサンプルブクマ数
+      example: 200
+    FanbookNewlyWritten:
+      type: boolean
+      description: オフ本が書き下ろしかどうか
+    FanbookNumberOfDistributionOnline:
+      type: integer
+      description: オフ本の頒布数(通販)
+      example: 250
+    FanbookNumberOfDistributionOffline:
+      type: integer
+      description: オフ本の頒布数(リアイベ)
+      example: 250
+    FanbookNumberOfPublished:
+      type: integer
+      description: オフ本の印刷部数
+      example: 550
+    FanbookPrice:
+      type: integer
+      description: オフ本の頒布価格
+      example: 1200
+    FanbookSummary:
+      type: string
+      description: オフ本のあらすじ
+      maxLength: 4096
+    FanbookRating:
+      type: boolean
+      description: オフ本の年齢制限の有無
+    FanbookCover:
+      type: string
+      description: オフ本の表紙のURL
+      maxLength: 512
+    FanbookComment:
+      type: string
+      description: オフ本のコメント
+      maxLength: 4096
+    # レスポンスボディ
+    PostResponseBody:
+      type: object
+      description: Post成功時のレスポンス。常にtrue
+      properties:
+        isSucceed:
+          type: boolean
+          example: true
+    ApiErrResponse:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+          example: 400
+        errCode:
+          type: string
+          maxLength: 4
+          minLength: 4
+          example: E001
+        errMessage:
+          type: string
+          example: 必須項目が入力されていません
+    # リクエストボディ
+    Genre:
+      type: object
+      description: ジャンル情報
+      properties:
+        genreID:
+          $ref: "#/components/schemas/GenreID"
+        genreName:
+          $ref: "#/components/schemas/GenreName"
+        genreStyle:
+          $ref: "#/components/schemas/GenreStyle"
+        genreStartDate:
+          $ref: "#/components/schemas/GenreStartDate"
+        genreEndDate:
+          $ref: "#/components/schemas/GenreEndDate"
+        genreStartAge:
+          $ref: "#/components/schemas/GenreStartAge"
+        genreEndAge:
+          $ref: "#/components/schemas/GenreEndAge"
+        genreFollowee:
+          $ref: "#/components/schemas/GenreFollowee"
+        genreFollower:
+          $ref: "#/components/schemas/GenreFollower"
+        genreFFRatio:
+          $ref: "#/components/schemas/GenreFFRatio"
+        genreComment:
+          $ref: "#/components/schemas/GenreComment"
+    Genres:
+      type: array
+      description: ジャンル情報(複数)
+      items:
+        $ref: "#/components/schemas/Genre"
+    Coupling:
+      type: object
+      description: カップリング情報
+      properties:
+        genreName:
+          $ref: "#/components/schemas/GenreName"
+        couplingName:
+          $ref: "#/components/schemas/CouplingName"
+        couplingFanAct:
+          $ref: "#/components/schemas/CouplingFanAct"
+        couplingStyle:
+          $ref: "#/components/schemas/CouplingStyle"
+        couplingSummary:
+          $ref: "#/components/schemas/CouplingSummary"
+        couplingTopName:
+          $ref: "#/components/schemas/CouplingTopName"
+        couplingBottomName:
+          $ref: "#/components/schemas/CouplingBottomName"
+        couplingTopAge:
+          $ref: "#/components/schemas/CouplingTopAge"
+        couplingBottomAge:
+          $ref: "#/components/schemas/CouplingBottomAge"
+        couplingTopSummary:
+          $ref: "#/components/schemas/CouplingTopSummary"
+        couplingBottomSummary:
+          $ref: "#/components/schemas/CouplingBottomSummary"
+        couplingTopHeight:
+          $ref: "#/components/schemas/CouplingTopHeight"
+        couplingBottomHeight:
+          $ref: "#/components/schemas/CouplingBottomHeight"
+        couplingTopJob:
+          $ref: "#/components/schemas/CouplingTopJob"
+        couplingBottomJob:
+          $ref: "#/components/schemas/CouplingBottomJob"
+    Couplings:
+      type: array
+      description: カップリング情報(複数)
+      items:
+        $ref: "#/components/schemas/Coupling"
+    Fanfic:
+      type: object
+      description: オン作品情報
+      properties:
+        genreName:
+          $ref: "#/components/schemas/GenreName"
+        couplingName:
+          $ref: "#/components/schemas/CouplingName"
+        fanficTitle:
+          $ref: "#/components/schemas/FanficTitle"
+        fanficNumberOfCharacters:
+          $ref: "#/components/schemas/FanficNumberOfCharacters"
+        fanficPublishedDate:
+          $ref: "#/components/schemas/FanficPublishedDate"
+        fanficStyle:
+          $ref: "#/components/schemas/FanficStyle"
+        fanficBookmarks:
+          $ref: "#/components/schemas/FanficBookmarks"
+        fanficSummary:
+          $ref: "#/components/schemas/FanficSummary"
+        fanficRating:
+          $ref: "#/components/schemas/FanficRating"
+        fanficCover:
+          $ref: "#/components/schemas/FanficCover"
+        fanficComment:
+          $ref: "#/components/schemas/FanficComment"
+    Fanfics:
+      type: array
+      description: オン作品情報(複数)
+      items:
+        $ref: "#/components/schemas/Fanfic"
+    Fanbook:
+      type: object
+      description: オフ本情報
+      properties:
+        genreName:
+          $ref: "#/components/schemas/GenreName"
+        couplingName:
+          $ref: "#/components/schemas/CouplingName"
+        fanbookTitle:
+          $ref: "#/components/schemas/FanbookTitle"
+        fanbookPages:
+          $ref: "#/components/schemas/FanbookPages"
+        fanbookPublishedDate:
+          $ref: "#/components/schemas/FanbookPublishedDate"
+        fanbookStyle:
+          $ref: "#/components/schemas/FanbookStyle"
+        fanbookSampleBookmarks:
+          $ref: "#/components/schemas/FanbookSampleBookmarks"
+        fanbookNewlyWritten:
+          $ref: "#/components/schemas/FanbookNewlyWritten"
+        fanbookNumberOfDistributionOffline:
+          $ref: "#/components/schemas/FanbookNumberOfDistributionOffline"
+        fanbookNumberOfDistributionOnline:
+          $ref: "#/components/schemas/FanbookNumberOfDistributionOnline"
+        fanbookNumberOfPublished:
+          $ref: "#/components/schemas/FanbookNumberOfPublished"
+        fanbookPrice:
+          $ref: "#/components/schemas/FanbookPrice"
+        fanbookSummary:
+          $ref: "#/components/schemas/FanbookSummary"
+        fanbookRating:
+          $ref: "#/components/schemas/FanbookRating"
+        fanbookCover:
+          $ref: "#/components/schemas/FanbookCover"
+        fanbookComment:
+          $ref: "#/components/schemas/FanbookComment"
+    Fanbooks:
+      type: array
+      description: オフ本情報(複数)
+      items:
+        $ref: "#/components/schemas/Fanbook"
