@@ -12,7 +12,7 @@ import Layout from "../../components/Layout";
 import { Button, ButtonGroup, Heading, Tag } from "@chakra-ui/react";
 
 export const getServerSideProps = async ({ req, res, query }: Args) => {
-  const ID = query.id as string;
+  const ID = Number(query.id);
   console.log(ID);
 
   const response = await genreClient._id(ID).$get();
