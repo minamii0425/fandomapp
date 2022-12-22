@@ -9,6 +9,7 @@ const genresHandlerWithID = async (
   // GET：指定したIDを持つジャンルを取得
   if (req.method === "GET") {
     const genreID = req.query.id;
+    console.log(`genreID: ${genreID}`);
 
     const result = await prisma.genres.findUnique({
       where: {
