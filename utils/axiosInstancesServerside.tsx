@@ -6,7 +6,8 @@ import couplingApi from "../api/couplings/$api";
 import fanficApi from "../api/fanfics/$api";
 import fanbookApi from "../api/fanbooks/$api";
 
-axios.defaults.baseURL = process.env.BASE_URL + "/api";
+// axios.defaults.baseURL = process.env.BASE_URL + "/api";
+axios.defaults.baseURL = "/api";
 
 export const genreClient = genreApi(
   aspida(
