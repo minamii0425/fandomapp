@@ -1,6 +1,16 @@
 import { Box, Checkbox, Stack } from "@chakra-ui/react";
 import { useState } from "react";
 import Layout from "../components/Layout";
+import { genreClient } from "../utils/axiosInstancesServerside";
+
+export const getServerSideProps = async () => {
+  // DB内に保存されたジャンル情報をすべて取得
+  const response = await genreClient.$get();
+
+  return {
+    props: { body: response },
+  };
+};
 
 const CheckBoxTest = () => {
   const [rowChecked, setRowChecked] = useState<boolean[]>([
