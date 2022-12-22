@@ -17,17 +17,23 @@ import {
   ButtonGroup,
   Checkbox,
 } from "@chakra-ui/react";
+import { GetServerSideProps } from "next";
 
-export const getServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({
+  resolvedUrl,
+}) => {
   // DB内に保存されたジャンル情報をすべて取得
   const response = await genreClient.$get();
 
   return {
-    props: { body: response },
+    props: { body: response, resolvedUrl },
   };
 };
 
-const Genres = ({ body }: Context<Genre[]>) => {
+const Genres = ({ body, resolvedUrl }: Context<Genre[]>) => {
+  console.log(process.env.NODE_ENV);
+  console.log(`resolvedUrl: ${resolvedUrl}`);
+
   // routerの読み込み
   const router = useRouter();
 
@@ -85,7 +91,7 @@ const Genres = ({ body }: Context<Genre[]>) => {
   const onClickRow = (id: number) => {
     // router.push("/genres/[id]", `/genres/${id}`);
     router.push({
-      pathname: `/genres/${id}`,
+      pathname: `/${resolvedUrl}/${id}`,
     });
   };
 

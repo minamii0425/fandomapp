@@ -10,10 +10,12 @@ import fanbookApi from "../api/fanbooks/$api";
 
 // dev環境はこっち
 // axios.defaults.baseURL = process.env.BASE_URL + "/api";
-
-// Production環境はこうしないとだめそう
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL + "/api";
-// axios.defaults.baseURL = "https://fandomapp-minamii0425.vercel.app/api/";
+if (process.env.NODE_ENV === "development") {
+  axios.defaults.baseURL = "http://localhost:3010/api";
+} else {
+  // Production環境はこうしないとだめそう
+  axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL + "/api";
+}
 
 export const genreClient = genreApi(
   aspida(

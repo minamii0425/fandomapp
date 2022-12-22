@@ -4,6 +4,7 @@ import { ParsedUrlQuery } from "querystring";
 export type Context<T> = {
   body: T;
   genreID: number;
+  resolvedUrl: T;
 };
 
 export type Args = {

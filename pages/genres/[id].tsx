@@ -11,18 +11,24 @@ import Link from "next/link";
 import Layout from "../../components/Layout";
 import { Button, ButtonGroup, Heading, Tag } from "@chakra-ui/react";
 
-export const getServerSideProps = async ({ req, res, query }: Args) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  resolvedUrl,
+}) => {
   const ID = Number(query.id);
   console.log(ID);
+  console.log(`resolvedUrl: ${resolvedUrl}`);
 
   const response = await genreClient._id(ID).$get();
 
   return {
-    props: { body: response },
+    props: { body: response, resolvedUrl: resolvedUrl },
   };
 };
 
-const Home = ({ body }: Context<Genre>) => {
+const Home = ({ body, resolvedUrl }: Context<Genre>) => {
+  console.log(resolvedUrl);
+
   const router = useRouter();
 
   const onClickBack = () => {
