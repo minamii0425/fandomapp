@@ -86,7 +86,6 @@ const Genres = ({ body }: Context<Genre[]>) => {
     // router.push("/genres/[id]", `/genres/${id}`);
     router.push({
       pathname: `/genres/${id}`,
-      query: { id: id },
     });
   };
 
