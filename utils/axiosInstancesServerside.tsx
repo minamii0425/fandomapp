@@ -6,7 +6,12 @@ import couplingApi from "../api/couplings/$api";
 import fanficApi from "../api/fanfics/$api";
 import fanbookApi from "../api/fanbooks/$api";
 
+// 環境に応じてaxios.defaults.baseURLを変更する必要あり
+
+// dev環境はこっち
 // axios.defaults.baseURL = process.env.BASE_URL + "/api";
+
+// Production環境はこうしないとだめそう
 axios.defaults.baseURL = "/api";
 
 export const genreClient = genreApi(
