@@ -1,37 +1,24 @@
-import type { GetServerSideProps, NextApiRequest, NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import Router from "next/router";
 import { genreClient } from "../../utils/axiosInstancesServerside";
 import { Genre } from "../../api/@types";
 import { Args, Context } from "../../types/context";
 import Layout from "../../components/Layout";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
   Heading,
   Button,
   ButtonGroup,
   Checkbox,
-  useCheckbox,
-  chakra,
-  Flex,
-  Text,
-  Box,
 } from "@chakra-ui/react";
 
-export const getServerSideProps = async ({ req, res, query }: Args) => {
+export const getServerSideProps = async () => {
   // DB内に保存されたジャンル情報をすべて取得
   const response = await genreClient.$get();
 
