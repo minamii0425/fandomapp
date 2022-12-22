@@ -18,14 +18,14 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 
-// export const getServerSideProps = async () => {
-//   // DB内に保存されたジャンル情報をすべて取得
-//   const response = await genreClient.$get();
+export const getServerSideProps = async () => {
+  // DB内に保存されたジャンル情報をすべて取得
+  const response = await genreClient.$get();
 
-//   return {
-//     props: { body: response },
-//   };
-// };
+  return {
+    props: { body: response },
+  };
+};
 
 const Genres = ({ body }: Context<Genre[]>) => {
   // routerの読み込み
