@@ -9,35 +9,17 @@ import { genreClient } from "../utils/axiosInstancesServerside";
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   // DB内に保存されたジャンル情報をすべて取得
 
-  // const response = await genreClient.$get();
-
-  const results = await prisma.genres.findMany({});
-
-  const convertedResult = results.map((result) => {
-    return {
-      genreID: result.id,
-      genreName: result.genre_name,
-      genreStyle: result.genre_style,
-      genreStartDate: result.genre_start_date,
-      genreEndDate: result.genre_end_date,
-      genreStartAge: result.genre_start_age,
-      genreEndAge: result.genre_end_age,
-      genreFollowee: result.genre_followee,
-      genreFollower: result.genre_follower,
-      genreFFRatio: result.genre_ff_ratio,
-      genreComment: result.genre_comment,
-    };
-  });
-  // res.json(convertedResult);
+  const response = await genreClient.$get();
 
   return {
-    props: { body: convertedResult },
+    props: { body: response },
   };
 
   // return { props: {} };
 };
 
 const CheckBoxTest = ({ body }: Context<Genre[]>) => {
+  console.log(body);
   const [rowChecked, setRowChecked] = useState<boolean[]>([
     false,
     false,
