@@ -83,7 +83,7 @@ const Genres = ({ body }: Context<Genre[]>) => {
 
   // 行クリック時に発火
   const onClickRow = (id: number) => {
-    router.push(`/genres/${id}`);
+    router.push("/genres/[id]", `/genres/${id}`);
   };
 
   // 新規作成ボタンクリック時に発火
