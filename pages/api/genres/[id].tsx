@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 
 // /api/genres/[id]

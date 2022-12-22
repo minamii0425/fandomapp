@@ -91,7 +91,7 @@ const Genres = ({ body, resolvedUrl }: Context<Genre[]>) => {
   const onClickRow = (id: number) => {
     // router.push("/genres/[id]", `/genres/${id}`);
     router.push({
-      pathname: `/${resolvedUrl}/${id}`,
+      pathname: `${resolvedUrl}/${id}`,
     });
   };
 
