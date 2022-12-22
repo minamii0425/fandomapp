@@ -22,6 +22,9 @@ import {
 } from "@chakra-ui/react";
 
 const Home: React.FC = () => {
+  // for debug
+  console.log(process.env.NODE_ENV);
+
   return (
     <>
       <Layout>
