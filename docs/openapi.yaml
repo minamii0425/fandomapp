@@ -10,10 +10,12 @@ info:
 servers:
   - url: "http://localhost:3010/api/"
     description: 開発環境
-    # variables:
-    #   port:
-    #     description: "ポート番号"
-    #     default: "3010"
+  - url: "https://fandomapp.vercel.app/api/"
+    description: 本番環境
+# variables:
+#   port:
+#     description: "ポート番号"
+#     default: "3010"
 tags:
   - name: ジャンル
     description: ジャンル関連

@@ -26,7 +26,7 @@ import {
   GenreStartAge,
   GenreStartDate,
   GenreStyle,
-} from "../api/@types";
+} from "../aspida_api/@types";
 import { genreClient } from "../utils/axiosInstancesServerside";
 
 export interface GenreFormProp {

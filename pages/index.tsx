@@ -5,7 +5,7 @@ import styles from "../styles/Home.module.css";
 import Router from "next/router";
 import { genreClient } from "../utils/axiosInstancesServerside";
 import { makeSerializable } from "../utils/util";
-import { Genre } from "../api/@types";
+import { Genre } from "../aspida_api/@types";
 import { Args, Context } from "../types/context";
 import Layout from "../components/Layout";
 import {

@@ -1,5 +1,5 @@
 import { genreClient } from "../../utils/axiosInstancesServerside";
-import { Genre } from "../../api/@types";
+import { Genre } from "../../aspida_api/@types";
 import { Args, Context } from "../../types/context";
 import Layout from "../../components/Layout";
 import { useRouter } from "next/router";

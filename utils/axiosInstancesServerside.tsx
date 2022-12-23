@@ -1,10 +1,10 @@
 import aspida from "@aspida/axios";
 import axios from "axios";
 import https from "https";
-import genreApi from "../api/genres/$api";
-import couplingApi from "../api/couplings/$api";
-import fanficApi from "../api/fanfics/$api";
-import fanbookApi from "../api/fanbooks/$api";
+import genreApi from "../aspida_api/genres/$api";
+import couplingApi from "../aspida_api/couplings/$api";
+import fanficApi from "../aspida_api/fanfics/$api";
+import fanbookApi from "../aspida_api/fanbooks/$api";
 
 // 環境に応じてaxios.defaults.baseURLを変更する必要あり
 

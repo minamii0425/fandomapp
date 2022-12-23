@@ -1,6 +1,6 @@
 import { Box, Checkbox, Stack } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
-import { Genre } from "../api/@types";
+import { Genre } from "../aspida_api/@types";
 import { Args, Context } from "../types/context";
 import { useState } from "react";
 import Layout from "../components/Layout";

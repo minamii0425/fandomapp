@@ -1,5 +1,5 @@
 import { Heading } from "@chakra-ui/react";
-import { Genre } from "../../../api/@types";
+import { Genre } from "../../../aspida_api/@types";
 import GenreForm from "../../../components/GenreForm";
 import Layout from "../../../components/Layout";
 import { Args, Context } from "../../../types/context";
