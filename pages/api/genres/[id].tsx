@@ -8,48 +8,29 @@ const genresHandlerWithID = async (
 ) => {
   // GET：指定したIDを持つジャンルを取得
   if (req.method === "GET") {
-    //   const genreID = req.query.id;
-    //   console.log(`genreID: ${genreID}`);
+    const genreID = req.query.id;
+    console.log(`genreID: ${genreID}`);
 
-    //   const result = await prisma.genres.findUnique({
-    //     where: {
-    //       id: Number(genreID),
-    //     },
-    //   });
-
-    //   const convertedResult = {
-    //     genreID: result?.id,
-    //     genreName: result?.genre_name,
-    //     genreStyle: result?.genre_style,
-    //     genreStartDate: result?.genre_start_date,
-    //     genreEndDate: result?.genre_end_date,
-    //     genreStartAge: result?.genre_start_age,
-    //     genreEndAge: result?.genre_end_age,
-    //     genreFollowee: result?.genre_followee,
-    //     genreFollower: result?.genre_follower,
-    //     genreFFRatio: result?.genre_ff_ratio,
-    //     genreComment: result?.genre_comment,
-    //   };
-
-    //   res.json(convertedResult);
-
-    const results = await prisma.genres.findMany({});
-
-    const convertedResult = results.map((result) => {
-      return {
-        genreID: result.id,
-        genreName: result.genre_name,
-        genreStyle: result.genre_style,
-        genreStartDate: result.genre_start_date,
-        genreEndDate: result.genre_end_date,
-        genreStartAge: result.genre_start_age,
-        genreEndAge: result.genre_end_age,
-        genreFollowee: result.genre_followee,
-        genreFollower: result.genre_follower,
-        genreFFRatio: result.genre_ff_ratio,
-        genreComment: result.genre_comment,
-      };
+    const result = await prisma.genres.findUnique({
+      where: {
+        id: Number(genreID),
+      },
     });
+
+    const convertedResult = {
+      genreID: result?.id,
+      genreName: result?.genre_name,
+      genreStyle: result?.genre_style,
+      genreStartDate: result?.genre_start_date,
+      genreEndDate: result?.genre_end_date,
+      genreStartAge: result?.genre_start_age,
+      genreEndAge: result?.genre_end_age,
+      genreFollowee: result?.genre_followee,
+      genreFollower: result?.genre_follower,
+      genreFFRatio: result?.genre_ff_ratio,
+      genreComment: result?.genre_comment,
+    };
+
     res.json(convertedResult);
   }
 

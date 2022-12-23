@@ -19,7 +19,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 };
 
 const CheckBoxTest = ({ body }: Context<Genre[]>) => {
-  console.log(body);
+  console.log(process.env.NODE_ENV);
   const [rowChecked, setRowChecked] = useState<boolean[]>([
     false,
     false,

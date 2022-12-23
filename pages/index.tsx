@@ -25,6 +25,15 @@ const Home: React.FC = () => {
   // for debug
   console.log(process.env.NODE_ENV);
 
+  if (process.env.NODE_ENV === "development") {
+    console.log("npm run dev");
+  } else if (process.env.NODE_ENV === "production") {
+    console.log("npm run start");
+  } else {
+    // Production環境はこうしないとだめそう
+    console.log("vercel環境");
+  }
+
   return (
     <>
       <Layout>
