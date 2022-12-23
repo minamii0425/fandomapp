@@ -15,7 +15,9 @@ if (process.env.NODE_ENV === "development") {
   baseURL = "http://localhost:3010/api";
 } else if (process.env.NODE_ENV === "production") {
   baseURL = "http://localhost:3010/api";
-} else if (process.env.NEXT_PUBLIC_NODE_ENV === "vercel_production") {
+}
+
+if (process.env.NEXT_PUBLIC_NODE_ENV === "vercel_production") {
   // Production環境はこうしないとだめそう
   baseURL = process.env.NEXT_PUBLIC_BASE_URL + "/api";
 }
