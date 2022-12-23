@@ -1,4 +1,3 @@
-import type { GetServerSideProps, NextApiRequest, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
@@ -10,24 +9,43 @@ import { Args, Context } from "../../types/context";
 import Link from "next/link";
 import Layout from "../../components/Layout";
 import { Button, ButtonGroup, Heading, Tag } from "@chakra-ui/react";
+import prisma from "../../lib/prisma";
+import { GetServerSideProps } from "next";
 
-export const getServerSideProps: GetServerSideProps = async ({
-  query,
-  resolvedUrl,
-}) => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const ID = Number(query.id);
   console.log(ID);
-  console.log(`resolvedUrl: ${resolvedUrl}`);
 
-  const response = await genreClient._id(ID).$get();
+  // const response = await genreClient._id(ID).$get();
+
+  // axiosじゃなくて直接APIを呼ばないと動かない？？
+  const result = await prisma.genres.findUnique({
+    where: {
+      id: Number(ID),
+    },
+  });
+
+  const convertedResult = {
+    genreID: result?.id,
+    genreName: result?.genre_name,
+    genreStyle: result?.genre_style,
+    genreStartDate: makeSerializable(result?.genre_start_date),
+    genreEndDate: makeSerializable(result?.genre_end_date),
+    genreStartAge: result?.genre_start_age,
+    genreEndAge: result?.genre_end_age,
+    genreFollowee: result?.genre_followee,
+    genreFollower: result?.genre_follower,
+    genreFFRatio: result?.genre_ff_ratio,
+    genreComment: result?.genre_comment,
+  };
 
   return {
-    props: { body: response, resolvedUrl: resolvedUrl },
+    props: { body: convertedResult },
   };
 };
 
 const Home = ({ body, resolvedUrl }: Context<Genre>) => {
-  console.log(resolvedUrl);
+  console.log(body);
 
   const router = useRouter();
 

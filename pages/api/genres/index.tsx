@@ -9,7 +9,7 @@ const genresHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     const results = await prisma.genres.findMany({});
 
-    const convertedResult = results.map((result) => {
+    const convertedResult = results.map((result: any) => {
       return {
         genreID: result.id,
         genreName: result.genre_name,

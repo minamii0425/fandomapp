@@ -17,18 +17,37 @@ import {
   ButtonGroup,
   Checkbox,
 } from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticProps } from "next";
 import prisma from "../../lib/prisma";
+import { makeSerializable } from "../../utils/util";
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps = async () => {
   // DB内に保存されたジャンル情報をすべて取得
-  const response = await genreClient.$get().catch((err) => {
-    console.log(err);
+  // const response = await genreClient.$get().catch((err) => {
+  //   console.log(err);
+  // });
+
+  // axiosじゃなくて直接APIを呼ばないと動かない？？
+  const response = await prisma.genres.findMany({});
+
+  const convertedResult = response.map((result: any) => {
+    return {
+      genreID: result.id,
+      genreName: result.genre_name,
+      genreStyle: result.genre_style,
+      genreStartDate: makeSerializable(result.genre_start_date),
+      genreEndDate: makeSerializable(result.genre_end_date),
+      genreStartAge: result.genre_start_age,
+      genreEndAge: result.genre_end_age,
+      genreFollowee: result.genre_followee,
+      genreFollower: result.genre_follower,
+      genreFFRatio: result.genre_ff_ratio,
+      genreComment: result.genre_comment,
+    };
   });
-  // const response = await prisma.genres.findMany({});
 
   return {
-    props: { body: response },
+    props: { body: convertedResult },
   };
 };
 
@@ -145,6 +164,7 @@ const Genres = ({ body }: Context<Genre[]>) => {
                 ) : (
                   // 中身があったらこちら
                   body.map((row, i) => {
+                    console.log(body[0].genreName);
                     return (
                       <Tr key={row.genreID}>
                         <Td>
@@ -162,10 +182,12 @@ const Genres = ({ body }: Context<Genre[]>) => {
                           {row.genreStyle}
                         </Td>
                         <Td onClick={() => onClickRow(row.genreID!)}>
-                          {row.genreStartDate!.substring(0, 10)}
+                          {/* {row.genreStartDate!.substring(0, 10)} */}
+                          {row.genreStartDate}
                         </Td>
                         <Td onClick={() => onClickRow(row.genreID!)}>
-                          {row.genreEndDate!.substring(0, 10)}
+                          {/* {row.genreEndDate!.substring(0, 10)} */}
+                          {row.genreEndDate}
                         </Td>
                         <Td onClick={() => onClickRow(row.genreID!)}>
                           {row.genreFollowee}

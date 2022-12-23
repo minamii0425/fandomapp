@@ -4,19 +4,42 @@ import GenreForm from "../../../components/GenreForm";
 import Layout from "../../../components/Layout";
 import { Args, Context } from "../../../types/context";
 import { genreClient } from "../../../utils/axiosInstancesServerside";
+import { makeSerializable } from "../../../utils/util";
+import prisma from "../../../lib/prisma";
 
 export const getServerSideProps = async ({ res, req, query }: Args) => {
-  const id = query.id as string;
-  console.log(id);
+  const ID = query.id as string;
+  console.log(ID);
 
-  const response = await genreClient._id(id).$get();
+  // axiosじゃなくて直接APIを呼ばないと動かない？？
+  const result = await prisma.genres.findUnique({
+    where: {
+      id: Number(ID),
+    },
+  });
+
+  const convertedResult = {
+    genreID: result?.id,
+    genreName: result?.genre_name,
+    genreStyle: result?.genre_style,
+    genreStartDate: makeSerializable(result?.genre_start_date),
+    genreEndDate: makeSerializable(result?.genre_end_date),
+    genreStartAge: result?.genre_start_age,
+    genreEndAge: result?.genre_end_age,
+    genreFollowee: result?.genre_followee,
+    genreFollower: result?.genre_follower,
+    genreFFRatio: result?.genre_ff_ratio,
+    genreComment: result?.genre_comment,
+  };
 
   return {
-    props: { body: response, genreID: id },
+    props: { body: convertedResult, genreID: ID },
   };
 };
 
 const UpdateGenre = ({ body, genreID }: Context<Genre>) => {
+  console.log(body);
+
   return (
     <>
       <Layout>
