@@ -23,7 +23,10 @@ import {
 
 const Home: React.FC = () => {
   // for debug
-  console.log(process.env.NODE_ENV);
+  console.log(`process.env.NODE_ENV: ${process.env.NODE_ENV}`);
+  console.log(
+    `process.env.NEXT_PUBLIC_NODE_ENV: ${process.env.NEXT_PUBLIC_NODE_ENV}`
+  );
 
   if (process.env.NODE_ENV === "development") {
     console.log("npm run dev");
