@@ -14,9 +14,8 @@ let baseURL;
 if (process.env.NODE_ENV === "development") {
   baseURL = "http://localhost:3010/api";
 } else if (process.env.NODE_ENV === "production") {
-  // localhost --> 127.0.0.1 にしてみたらいけた なぜ？？
   baseURL = "http://localhost:3010/api";
-} else {
+} else if (process.env.NEXT_PUBLIC_NODE_ENV === "vercel_production") {
   // Production環境はこうしないとだめそう
   baseURL = process.env.NEXT_PUBLIC_BASE_URL + "/api";
 }
