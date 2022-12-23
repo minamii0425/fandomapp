@@ -5,11 +5,13 @@ import { Args, Context } from "../types/context";
 import { useState } from "react";
 import Layout from "../components/Layout";
 import { genreClient } from "../utils/axiosInstancesServerside";
+import prisma from "../lib/prisma";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   // DB内に保存されたジャンル情報をすべて取得
 
-  const response = await genreClient.$get();
+  // const response = await genreClient.$get();
+  const response = await prisma.genres.findMany({});
 
   return {
     props: { body: response },
@@ -19,7 +21,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 };
 
 const CheckBoxTest = ({ body }: Context<Genre[]>) => {
-  console.log(process.env.NODE_ENV);
+  console.log(body);
+  console.log(`process.env.NODE_ENV: ${process.env.NODE_ENV}`);
+  console.log(`NEXT_PUBLIC_BASE_URL: ${process.env.NEXT_PUBLIC_BASE_URL}`);
+  console.log(`NEXT_PUBLIC_NODE_ENV: ${process.env.NEXT_PUBLIC_NODE_ENV}`);
+
   const [rowChecked, setRowChecked] = useState<boolean[]>([
     false,
     false,
@@ -34,10 +40,7 @@ const CheckBoxTest = ({ body }: Context<Genre[]>) => {
         index === rowIndex ? !rowChecked[rowIndex] : check
       )
     );
-    console.log(rowChecked[rowIndex]);
   };
-
-  console.log(rowChecked);
 
   const allCheck = (isChecked: boolean) => {
     if (isChecked) {
@@ -53,7 +56,6 @@ const CheckBoxTest = ({ body }: Context<Genre[]>) => {
         <Box>
           <Stack>
             <Checkbox onChange={(e) => allCheck(e.target.checked)}>
-              {" "}
               Select All
             </Checkbox>
             <Checkbox isChecked={rowChecked[0]} onChange={() => clickCheck(0)}>
@@ -65,29 +67,6 @@ const CheckBoxTest = ({ body }: Context<Genre[]>) => {
             <Checkbox isChecked={rowChecked[2]} onChange={() => clickCheck(2)}>
               ラベル
             </Checkbox>
-            {/* 
-            <input
-              type="checkbox"
-              checked={checked[0]}
-              onClick={() => clickCheck(0)}
-            />
-            <input
-              type="checkbox"
-              checked={checked[1]}
-              onClick={() => clickCheck(1)}
-            />
-            <input
-              type="checkbox"
-              checked={checked[2]}
-              onClick={() => clickCheck(2)}
-            />
-            <label>
-              <input
-                type="checkbox"
-                onChange={(e) => allCheck(e.target.checked)}
-              />
-              トグル
-            </label> */}
           </Stack>
         </Box>
       </Layout>

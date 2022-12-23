@@ -1731,11 +1731,6 @@
   dependencies:
     "node-gyp-build" "^4.3.0"
 
-"bulma@^0.9.4":
-  "integrity" "sha512-86FlT5+1GrsgKbPLRRY7cGDg8fsJiP/jzTqXXVqiUZZ2aZT8uemEOHlU1CDU+TxklPEZ11HZNNWclRBBecP4CQ=="
-  "resolved" "https://registry.npmjs.org/bulma/-/bulma-0.9.4.tgz"
-  "version" "0.9.4"
-
 "call-bind@^1.0.0", "call-bind@^1.0.2":
   "integrity" "sha512-7O+FbCihrB5WGbFYesctwmTKae6rOiIzmz1icreWJ+0aA7LJfuqhEso2T9ncpcFtzMQtzXf2QGGueWJGTYsqrA=="
   "resolved" "https://registry.npmjs.org/call-bind/-/call-bind-1.0.2.tgz"

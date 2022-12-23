@@ -18,21 +18,24 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
+import prisma from "../../lib/prisma";
 
-export const getServerSideProps: GetServerSideProps = async ({
-  resolvedUrl,
-}) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   // DB内に保存されたジャンル情報をすべて取得
-  const response = await genreClient.$get();
+  const response = await genreClient.$get().catch((err) => {
+    console.log(err);
+  });
+  // const response = await prisma.genres.findMany({});
 
   return {
-    props: { body: response, resolvedUrl },
+    props: { body: response },
   };
 };
 
-const Genres = ({ body, resolvedUrl }: Context<Genre[]>) => {
+const Genres = ({ body }: Context<Genre[]>) => {
   console.log(process.env.NODE_ENV);
-  console.log(`resolvedUrl: ${resolvedUrl}`);
+
+  console.log(body);
 
   // routerの読み込み
   const router = useRouter();
@@ -89,10 +92,7 @@ const Genres = ({ body, resolvedUrl }: Context<Genre[]>) => {
 
   // 行クリック時に発火
   const onClickRow = (id: number) => {
-    // router.push("/genres/[id]", `/genres/${id}`);
-    router.push({
-      pathname: `${resolvedUrl}/${id}`,
-    });
+    router.push("/genres/[id]", `/genres/${id}`);
   };
 
   // 新規作成ボタンクリック時に発火

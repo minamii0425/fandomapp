@@ -32,6 +32,7 @@ const Home: React.FC = () => {
     console.log("npm run dev");
   } else if (process.env.NODE_ENV === "production") {
     console.log("npm run start");
+    console.log(process.env.BASE_URL);
   } else {
     // Production環境はこうしないとだめそう
     console.log("vercel環境");

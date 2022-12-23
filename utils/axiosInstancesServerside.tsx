@@ -8,15 +8,17 @@ import fanbookApi from "../api/fanbooks/$api";
 
 // 環境に応じてaxios.defaults.baseURLを変更する必要あり
 
+let baseURL;
 // dev環境はこっち
 // axios.defaults.baseURL = process.env.BASE_URL + "/api";
 if (process.env.NODE_ENV === "development") {
-  axios.defaults.baseURL = "http://localhost:3010/api";
+  baseURL = "http://localhost:3010/api";
 } else if (process.env.NODE_ENV === "production") {
-  axios.defaults.baseURL = process.env.BASE_URL + "/api";
+  // localhost --> 127.0.0.1 にしてみたらいけた なぜ？？
+  baseURL = "http://localhost:3010/api";
 } else {
   // Production環境はこうしないとだめそう
-  axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL + "/api";
+  baseURL = process.env.NEXT_PUBLIC_BASE_URL + "/api";
 }
 
 export const genreClient = genreApi(
@@ -26,6 +28,7 @@ export const genreClient = genreApi(
       httpsAgent: new https.Agent({
         rejectUnauthorized: false,
       }),
+      baseURL: baseURL,
     })
   )
 );
