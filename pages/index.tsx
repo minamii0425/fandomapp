@@ -28,7 +28,7 @@ const Home: React.FC = () => {
     `process.env.NEXT_PUBLIC_NODE_ENV: ${process.env.NEXT_PUBLIC_NODE_ENV}`
   );
   console.log(`VERCEL_ENV: ${process.env.VERCEL_ENV}`);
-  console.log(process.env);
+  console.log(`NEXT_PUBLIC_BASE_URL: ${process.env.NEXT_PUBLIC_BASE_URL}`);
 
   if (process.env.NODE_ENV === "development") {
     console.log("npm run dev");
