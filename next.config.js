@@ -6,6 +6,16 @@ const nextConfig = {
   //   BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
   // },
   // CORS許可設定
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "yfuqqvomabnonafmogsq.supabase.co",
+        port: "",
+        pathname: "/storage/v1/object/public/fandomapp/**",
+      },
+    ],
+  },
   async headers() {
     return [
       {
