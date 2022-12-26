@@ -18,7 +18,7 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import { GetServerSideProps, GetStaticProps } from "next";
-import prisma from "../../lib/prisma";
+import prisma from "../../utils/prisma";
 import { makeSerializable } from "../../utils/util";
 
 export const getServerSideProps: GetServerSideProps = async () => {

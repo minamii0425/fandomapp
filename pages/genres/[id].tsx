@@ -9,7 +9,7 @@ import { Args, Context } from "../../types/context";
 import Link from "next/link";
 import Layout from "../../components/Layout";
 import { Button, ButtonGroup, Heading, Tag } from "@chakra-ui/react";
-import prisma from "../../lib/prisma";
+import prisma from "../../utils/prisma";
 import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {

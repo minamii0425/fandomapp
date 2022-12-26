@@ -5,7 +5,7 @@ import Layout from "../../../components/Layout";
 import { Args, Context } from "../../../types/context";
 import { genreClient } from "../../../utils/axiosInstancesServerside";
 import { makeSerializable } from "../../../utils/util";
-import prisma from "../../../lib/prisma";
+import prisma from "../../../utils/prisma";
 
 export const getServerSideProps = async ({ res, req, query }: Args) => {
   const ID = query.id as string;

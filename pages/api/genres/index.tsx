@@ -1,7 +1,5 @@
-import { Prisma } from "@prisma/client";
-import { useRouter } from "next/router";
 import type { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../../lib/prisma";
+import prisma from "../../../utils/prisma";
 
 // /api/genres
 const genresHandler = async (req: NextApiRequest, res: NextApiResponse) => {

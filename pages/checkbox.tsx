@@ -5,7 +5,12 @@ import { Args, Context } from "../types/context";
 import { useState } from "react";
 import Layout from "../components/Layout";
 import { genreClient } from "../utils/axiosInstancesServerside";
-import prisma from "../lib/prisma";
+import prisma from "../utils/prisma";
+import CardComponent from "../components/Card";
+import { Grid } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
+import { GridItem } from "@chakra-ui/react";
+import { makeSerializable } from "../utils/util";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   // DB内に保存されたジャンル情報をすべて取得
@@ -13,8 +18,24 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   // const response = await genreClient.$get();
   const response = await prisma.genres.findMany({});
 
+  const convertedResult = response.map((result: any) => {
+    return {
+      genreID: result.id,
+      genreName: result.genre_name,
+      genreStyle: result.genre_style,
+      genreStartDate: makeSerializable(result.genre_start_date),
+      genreEndDate: makeSerializable(result.genre_end_date),
+      genreStartAge: result.genre_start_age,
+      genreEndAge: result.genre_end_age,
+      genreFollowee: result.genre_followee,
+      genreFollower: result.genre_follower,
+      genreFFRatio: result.genre_ff_ratio,
+      genreComment: result.genre_comment,
+    };
+  });
+
   return {
-    props: { body: response },
+    props: { body: convertedResult },
   };
 
   // return { props: {} };
@@ -67,6 +88,63 @@ const CheckBoxTest = ({ body }: Context<Genre[]>) => {
             <Checkbox isChecked={rowChecked[2]} onChange={() => clickCheck(2)}>
               ラベル
             </Checkbox>
+
+            <Grid templateColumns="repeat(5, 1fr)" gap={6}>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+              <GridItem>
+                <CardComponent></CardComponent>
+              </GridItem>
+            </Grid>
           </Stack>
         </Box>
       </Layout>

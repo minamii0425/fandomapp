@@ -1,5 +1,5 @@
 import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../../lib/prisma";
+import prisma from "../../../utils/prisma";
 
 // /api/genres/[id]
 const genresHandlerWithID = async (
