@@ -14,6 +14,7 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -23,6 +24,10 @@ import {
   PhoneIcon,
   ArrowBackIcon,
 } from "@chakra-ui/icons";
+import { useRouter } from "next/router";
+import { useState, FormEvent, useEffect, useContext } from "react";
+import { supabase } from "../utils/supabase";
+import { SessionContext } from "../pages/_app";
 
 interface NavItem {
   label: string;
@@ -64,6 +69,7 @@ const NAV_ITEMS: Array<NavItem> = [
         subLabel: "ジャンルの新規作成",
         href: "/genres/create",
       },
+
       {
         label: "Genres List",
         subLabel: "ジャンルの一覧・削除・更新",
@@ -118,8 +124,46 @@ const NAV_ITEMS: Array<NavItem> = [
   },
 ];
 
-const WithSubnavigation = () => {
+const HeaderForLoggedInUser = () => {
   const { isOpen, onToggle } = useDisclosure();
+
+  const toast = useToast();
+  const router = useRouter();
+
+  const session = useContext(SessionContext);
+  console.log(`Headerから見たsession: ${session}`);
+
+  // サインアウト
+  const onClickLogOut = async () => {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      toast({
+        title: "LogOut Failure",
+        description: "We've created your account for you.",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+
+    toast({
+      title: "Successfully Logged out",
+      description: "We've created your account for you.",
+      status: "success",
+      duration: 9000,
+      isClosable: true,
+    });
+    router.push("/");
+  };
+
+  const onClickSignIn = () => {
+    router.push("/signin");
+  };
+
+  const onClickSignUp = () => {
+    router.push("/signup");
+  };
 
   return (
     <Box>
@@ -168,27 +212,46 @@ const WithSubnavigation = () => {
           direction={"row"}
           spacing={6}
         >
-          <Button
-            as={"a"}
-            fontSize={"sm"}
-            fontWeight={400}
-            variant={"link"}
-            href={"#"}
-          >
-            Sign In
-          </Button>
-          <Button
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"white"}
-            bg={"pink.400"}
-            _hover={{
-              bg: "pink.300",
-            }}
-          >
-            Sign Up
-          </Button>
+          {session === undefined ? (
+            <>
+              <Button
+                as={"a"}
+                fontSize={"sm"}
+                fontWeight={400}
+                variant={"link"}
+                onClick={onClickSignIn}
+              >
+                Sign In
+              </Button>
+              <Button
+                display={{ base: "none", md: "inline-flex" }}
+                fontSize={"sm"}
+                fontWeight={600}
+                color={"white"}
+                bg={"pink.400"}
+                _hover={{
+                  bg: "pink.300",
+                }}
+                onClick={onClickSignUp}
+              >
+                Sign Up
+              </Button>
+            </>
+          ) : (
+            <Button
+              display={{ base: "none", md: "inline-flex" }}
+              fontSize={"sm"}
+              fontWeight={600}
+              color={"white"}
+              bg={"pink.400"}
+              _hover={{
+                bg: "pink.300",
+              }}
+              onClick={onClickLogOut}
+            >
+              Log Out
+            </Button>
+          )}
         </Stack>
       </Flex>
 
@@ -199,7 +262,7 @@ const WithSubnavigation = () => {
   );
 };
 
-export default WithSubnavigation;
+export default HeaderForLoggedInUser;
 
 const DesktopNav = () => {
   const linkColor = useColorModeValue("gray.600", "gray.200");
